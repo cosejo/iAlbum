@@ -99,12 +99,11 @@
 		078339C028B1B0160036F04A /* iAlbum */ = {
 			isa = PBXGroup;
 			children = (
+				078339F428B1B2680036F04A /* UIAssets */,
+				078339F228B1B2110036F04A /* Network */,
+				078339F128B1B2080036F04A /* Modules */,
 				078339C128B1B0160036F04A /* AppDelegate.swift */,
 				078339C328B1B0160036F04A /* SceneDelegate.swift */,
-				078339C528B1B0160036F04A /* ViewController.swift */,
-				078339C728B1B0160036F04A /* Main.storyboard */,
-				078339CA28B1B0170036F04A /* Assets.xcassets */,
-				078339CC28B1B0170036F04A /* LaunchScreen.storyboard */,
 				078339CF28B1B0170036F04A /* Info.plist */,
 			);
 			path = iAlbum;
@@ -126,6 +125,47 @@
 				078339E528B1B0170036F04A /* Info.plist */,
 			);
 			path = iAlbumUITests;
+			sourceTree = "<group>";
+		};
+		078339F128B1B2080036F04A /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				078339F328B1B2250036F04A /* PhotosList */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		078339F228B1B2110036F04A /* Network */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		078339F328B1B2250036F04A /* PhotosList */ = {
+			isa = PBXGroup;
+			children = (
+				078339F528B1B31B0036F04A /* Models */,
+				078339C528B1B0160036F04A /* ViewController.swift */,
+			);
+			path = PhotosList;
+			sourceTree = "<group>";
+		};
+		078339F428B1B2680036F04A /* UIAssets */ = {
+			isa = PBXGroup;
+			children = (
+				078339C728B1B0160036F04A /* Main.storyboard */,
+				078339CA28B1B0170036F04A /* Assets.xcassets */,
+				078339CC28B1B0170036F04A /* LaunchScreen.storyboard */,
+			);
+			path = UIAssets;
+			sourceTree = "<group>";
+		};
+		078339F528B1B31B0036F04A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
