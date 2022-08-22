@@ -13,3 +13,4 @@
 "photos.collection.error.title" = "Ups, we have an error";
 "photos.collection.error.message" = "Please swipe again to reload";
 "photos.collection.error.button" = "Ok";
+"photos.collection.refresh.title" = "Pull to refresh";

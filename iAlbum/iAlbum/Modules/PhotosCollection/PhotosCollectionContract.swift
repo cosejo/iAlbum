@@ -12,9 +12,11 @@ protocol PhotosCollectionContractView {
     func dismissLoading()
     func showError()
     func updatePhotosCollection(newPhotos: [Photo], isReload: Bool)
+    func openPhotoDetail(thumbnailUrl: String)
 }
 
 protocol PhotosCollectionContractPresenter {
     func loadPhotos()
     func reloadPhotos()
+    func selectPhoto(_ index: Int)
 }

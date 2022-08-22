@@ -14,15 +14,19 @@ class PhotosCollectionViewController: UICollectionViewController {
         static let errorViewTitle = "photos.collection.error.title"
         static let errorViewMessage = "photos.collection.error.message"
         static let errorViewButton = "photos.collection.error.button"
+        static let refreshViewTitle = "photos.collection.refresh.title"
     }
     
     private let reuseIdentifier = "PhotoCell"
+    private let storyboardName = "Main"
+    private let photoDetailViewControllerID = "PhotoDetailViewController"
     private let itemsPerRow: CGFloat = 3
     private let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
     
-    public var presenter: PhotosCollectionContractPresenter?
     public var activityIndicator: UIActivityIndicatorView?
     public var refreshControl: UIRefreshControl?
+    
+    public var presenter: PhotosCollectionContractPresenter?
     public var photos: [Photo] = []
     public var isLoading: Bool = false
     
@@ -43,8 +47,8 @@ class PhotosCollectionViewController: UICollectionViewController {
     
     func setupRefreshingGesture() {
         refreshControl = UIRefreshControl()
-        refreshControl!.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        refreshControl!.addTarget(self, action: #selector(PhotosCollectionViewController.loadMorePhotos), for: .valueChanged)
+        refreshControl!.attributedTitle = NSAttributedString(string: StringConstants.refreshViewTitle.localized)
+        refreshControl!.addTarget(self, action: #selector(PhotosCollectionViewController.reloadPhotos), for: .valueChanged)
         collectionView.addSubview(refreshControl!)
     }
     
@@ -56,7 +60,7 @@ class PhotosCollectionViewController: UICollectionViewController {
         presenter?.loadPhotos()
     }
     
-    @objc func loadMorePhotos() {
+    @objc func reloadPhotos() {
         guard !isLoading else {
             refreshControl?.endRefreshing()
             return
@@ -67,25 +71,35 @@ class PhotosCollectionViewController: UICollectionViewController {
 }
 
 // MARK: - UICollectionViewDataSource
+// Use Main Actor - wait for Swift 5.5
 extension PhotosCollectionViewController: PhotosCollectionContractView {
     
     func showLoading() {
         isLoading = true
-        refreshControl?.endRefreshing()
-        activityIndicator?.startAnimating()
+        DispatchQueue.main.async { [weak self] in
+            self?.refreshControl?.endRefreshing()
+            self?.activityIndicator?.startAnimating()
+        }
     }
     
     func dismissLoading() {
         isLoading = false
-        activityIndicator?.stopAnimating()
+        DispatchQueue.main.async { [weak self] in
+            self?.activityIndicator?.stopAnimating()
+        }
     }
     
     func showError() {
         let errorAlert = UIAlertController(title: StringConstants.errorViewTitle.localized, message: StringConstants.errorViewMessage.localized, preferredStyle: .alert)
         errorAlert.addAction(UIAlertAction(title: StringConstants.errorViewButton.localized, style: .default, handler: nil))
-        present(errorAlert, animated: true, completion: nil)
+        DispatchQueue.main.async { [weak self] in
+            self?.present(errorAlert, animated: true, completion: nil)
+        }
     }
     
+    /**
+     * Update the Collecttion, if it is a reload call it will replace the list to refresh it.
+     */
     func updatePhotosCollection(newPhotos: [Photo], isReload: Bool) {
         if isReload {
             photos = newPhotos
@@ -93,7 +107,16 @@ extension PhotosCollectionViewController: PhotosCollectionContractView {
             photos.append(contentsOf: newPhotos)
         }
         
-        collectionView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.collectionView.reloadData()
+        }
+    }
+
+    func openPhotoDetail(thumbnailUrl: String) {
+        let storyboard = UIStoryboard(name: storyboardName, bundle: nil)
+        let photoDetailViewController: PhotoDetailViewController = storyboard.instantiateViewController(identifier: photoDetailViewControllerID)
+        photoDetailViewController.photoUrl = thumbnailUrl
+        show(photoDetailViewController, sender: self)
     }
     
 }
@@ -117,7 +140,7 @@ extension PhotosCollectionViewController {
     
     
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.row == photos.count-1 && !isLoading  {
+        if indexPath.row == photos.count - 1 && !isLoading  {
             loadPhotos()
         }
     }
@@ -125,6 +148,9 @@ extension PhotosCollectionViewController {
 
 // MARK: - UICollectionViewDelegate
 extension PhotosCollectionViewController {
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        presenter?.selectPhoto(indexPath.row)
+    }
 }
 
 // MARK: - Collection View Flow Layout Delegate

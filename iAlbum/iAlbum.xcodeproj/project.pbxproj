@@ -28,6 +28,7 @@
 		07833A0F28B322EE0036F04A /* PhotosCollectionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07833A0E28B322EE0036F04A /* PhotosCollectionPresenter.swift */; };
 		07833A1128B336F00036F04A /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07833A1028B336F00036F04A /* StringExtension.swift */; };
 		07833A1528B338560036F04A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 07833A1728B338560036F04A /* Localizable.strings */; };
+		07833A1B28B34E7F0036F04A /* PhotoDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07833A1A28B34E7F0036F04A /* PhotoDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,7 @@
 		07833A0E28B322EE0036F04A /* PhotosCollectionPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosCollectionPresenter.swift; sourceTree = "<group>"; };
 		07833A1028B336F00036F04A /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		07833A1628B338560036F04A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		07833A1A28B34E7F0036F04A /* PhotoDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,8 +158,8 @@
 		078339F128B1B2080036F04A /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				07833A1928B34E6D0036F04A /* PhotoDetail */,
 				078339F328B1B2250036F04A /* PhotosCollection */,
-				07833A0E28B322EE0036F04A /* PhotosCollectionPresenter.swift */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -180,6 +182,7 @@
 				078339F528B1B31B0036F04A /* Models */,
 				078339C528B1B0160036F04A /* PhotosCollectionViewController.swift */,
 				07833A0C28B321850036F04A /* PhotosCollectionContract.swift */,
+				07833A0E28B322EE0036F04A /* PhotosCollectionPresenter.swift */,
 			);
 			path = PhotosCollection;
 			sourceTree = "<group>";
@@ -237,6 +240,14 @@
 				07833A1728B338560036F04A /* Localizable.strings */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		07833A1928B34E6D0036F04A /* PhotoDetail */ = {
+			isa = PBXGroup;
+			children = (
+				07833A1A28B34E7F0036F04A /* PhotoDetailViewController.swift */,
+			);
+			path = PhotoDetail;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -376,6 +387,7 @@
 				078339F728B1B5530036F04A /* Photo.swift in Sources */,
 				07833A0F28B322EE0036F04A /* PhotosCollectionPresenter.swift in Sources */,
 				07833A0628B30CD50036F04A /* NetworkConstants.swift in Sources */,
+				07833A1B28B34E7F0036F04A /* PhotoDetailViewController.swift in Sources */,
 				07833A0228B2DA5E0036F04A /* Endpoint.swift in Sources */,
 				078339C628B1B0160036F04A /* PhotosCollectionViewController.swift in Sources */,
 				07833A0028B2D88F0036F04A /* NetworkManager.swift in Sources */,
@@ -570,6 +582,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = iAlbum/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -588,6 +601,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = iAlbum/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

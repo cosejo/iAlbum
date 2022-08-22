@@ -30,23 +30,20 @@ class PhotosCollectionPresenter: PhotosCollectionContractPresenter {
         fetchPhotos(index: 0, limit: currentPhotsCount, isReload: true)
     }
     
+    func selectPhoto(_ index: Int) {
+        view.openPhotoDetail(thumbnailUrl: photos[index].thumbnailUrl)
+    }
+    
     func fetchPhotos(index: Int, limit: Int, isReload: Bool = false) {
-        DispatchQueue.main.async {
-            self.view.showLoading()
-        }
-        
+        view.showLoading()
         networkManager.getPhotos(index: index, limit: limit) { [weak self] newPhotos, error in
             if newPhotos == nil || error != nil {
-                DispatchQueue.main.async {
-                    self?.view.dismissLoading()
-                    self?.view.showError()
-                }
+                self?.view.dismissLoading()
+                self?.view.showError()
             } else {
                 self?.photos.append(contentsOf: newPhotos!)
-                DispatchQueue.main.async {
-                    self?.view.dismissLoading()
-                    self?.view.updatePhotosCollection(newPhotos: newPhotos!, isReload: isReload)
-                }
+                self?.view.dismissLoading()
+                self?.view.updatePhotosCollection(newPhotos: newPhotos!, isReload: isReload)
             }
         }
     }
