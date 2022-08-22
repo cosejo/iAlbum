@@ -10,32 +10,59 @@ import UIKit
 class PhotosCollectionViewController: UICollectionViewController {
     
     private enum StringConstants {
-      static let loadingMessage = "photos.collection.loading.message"
-      static let errorViewTitle = "photos.collection.error.title"
-      static let errorViewMessage = "photos.collection.error.message"
-      static let errorViewButton = "photos.collection.error.button"
+        static let loadingMessage = "photos.collection.loading.message"
+        static let errorViewTitle = "photos.collection.error.title"
+        static let errorViewMessage = "photos.collection.error.message"
+        static let errorViewButton = "photos.collection.error.button"
     }
     
     private let reuseIdentifier = "PhotoCell"
+    private let itemsPerRow: CGFloat = 3
+    private let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
     
     public var presenter: PhotosCollectionContractPresenter?
+    public var activityIndicator: UIActivityIndicatorView?
+    public var refreshControl: UIRefreshControl?
     public var photos: [Photo] = []
-    public var alert: UIAlertController?
+    public var isLoading: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         initLoadingView()
-        presenter = PhotosCollectionPresenter(view: self)
-        presenter?.loadPhotos()
+        setupRefreshingGesture()
+        initPresenter()
+        loadPhotos()
     }
     
     func initLoadingView() {
-        alert = UIAlertController(title: nil, message: StringConstants.loadingMessage.localized, preferredStyle: .alert)
-        let loadingIndicator = UIActivityIndicatorView(frame: CGRect(x: 10, y: 5, width: 50, height: 50))
-        loadingIndicator.hidesWhenStopped = true
-        loadingIndicator.style = UIActivityIndicatorView.Style.medium
-        loadingIndicator.startAnimating()
-        alert?.view.addSubview(loadingIndicator)
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        view.addSubview(activityIndicator!)
+        activityIndicator?.frame = view.bounds
+        activityIndicator?.startAnimating()
+    }
+    
+    func setupRefreshingGesture() {
+        refreshControl = UIRefreshControl()
+        refreshControl!.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl!.addTarget(self, action: #selector(PhotosCollectionViewController.loadMorePhotos), for: .valueChanged)
+        collectionView.addSubview(refreshControl!)
+    }
+    
+    func initPresenter() {
+        presenter = PhotosCollectionPresenter(view: self)
+    }
+    
+    func loadPhotos() {
+        presenter?.loadPhotos()
+    }
+    
+    @objc func loadMorePhotos() {
+        guard !isLoading else {
+            refreshControl?.endRefreshing()
+            return
+        }
+        
+        presenter?.reloadPhotos()
     }
 }
 
@@ -43,11 +70,14 @@ class PhotosCollectionViewController: UICollectionViewController {
 extension PhotosCollectionViewController: PhotosCollectionContractView {
     
     func showLoading() {
-        present(alert!, animated: true, completion: nil)
+        isLoading = true
+        refreshControl?.endRefreshing()
+        activityIndicator?.startAnimating()
     }
     
     func dismissLoading() {
-        alert?.dismiss(animated: true, completion: nil)
+        isLoading = false
+        activityIndicator?.stopAnimating()
     }
     
     func showError() {
@@ -56,9 +86,14 @@ extension PhotosCollectionViewController: PhotosCollectionContractView {
         present(errorAlert, animated: true, completion: nil)
     }
     
-    func updatePhotosCollection(newPhotos: [Photo]) {
-        self.photos.append(contentsOf: newPhotos)
-        self.collectionView.reloadData()
+    func updatePhotosCollection(newPhotos: [Photo], isReload: Bool) {
+        if isReload {
+            photos = newPhotos
+        } else {
+            photos.append(contentsOf: newPhotos)
+        }
+        
+        collectionView.reloadData()
     }
     
 }
@@ -79,9 +114,35 @@ extension PhotosCollectionViewController {
         cell.setCellInformation(url: photos[indexPath.row].url)
         return cell
     }
+    
+    
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.row == photos.count-1 && !isLoading  {
+            loadPhotos()
+        }
+    }
 }
 
 // MARK: - UICollectionViewDelegate
 extension PhotosCollectionViewController {
+}
+
+// MARK: - Collection View Flow Layout Delegate
+extension PhotosCollectionViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let paddingSpace = sectionInsets.left * (itemsPerRow + 1)
+        let availableWidth = view.frame.width - paddingSpace
+        let widthPerItem = availableWidth / itemsPerRow
+        return CGSize(width: widthPerItem, height: widthPerItem)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return sectionInsets
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return sectionInsets.left
+    }
     
 }

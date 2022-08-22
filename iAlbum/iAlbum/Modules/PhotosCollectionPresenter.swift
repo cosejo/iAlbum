@@ -9,7 +9,7 @@ import Foundation
 
 class PhotosCollectionPresenter: PhotosCollectionContractPresenter {
     
-    public let photosLimit = 20
+    public let photosLimit = 21
     
     public var view: PhotosCollectionContractView
     public var networkManager: NetworkManager
@@ -21,11 +21,21 @@ class PhotosCollectionPresenter: PhotosCollectionContractPresenter {
     }
     
     func loadPhotos() {
+        fetchPhotos(index: photos.count, limit: photosLimit)
+    }
+    
+    func reloadPhotos() {
+        let currentPhotsCount = photos.count
+        photos = []
+        fetchPhotos(index: 0, limit: currentPhotsCount, isReload: true)
+    }
+    
+    func fetchPhotos(index: Int, limit: Int, isReload: Bool = false) {
         DispatchQueue.main.async {
             self.view.showLoading()
         }
         
-        networkManager.getPhotos(index: photos.count, limit: photosLimit) { [weak self] newPhotos, error in
+        networkManager.getPhotos(index: index, limit: limit) { [weak self] newPhotos, error in
             if newPhotos == nil || error != nil {
                 DispatchQueue.main.async {
                     self?.view.dismissLoading()
@@ -35,7 +45,7 @@ class PhotosCollectionPresenter: PhotosCollectionContractPresenter {
                 self?.photos.append(contentsOf: newPhotos!)
                 DispatchQueue.main.async {
                     self?.view.dismissLoading()
-                    self?.view.updatePhotosCollection(newPhotos: newPhotos!)
+                    self?.view.updatePhotosCollection(newPhotos: newPhotos!, isReload: isReload)
                 }
             }
         }

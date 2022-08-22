@@ -187,12 +187,11 @@
 		078339F428B1B2680036F04A /* UIAssets */ = {
 			isa = PBXGroup;
 			children = (
+				07833A1828B33EEC0036F04A /* Assets */,
 				07833A1228B3382A0036F04A /* Extensions */,
 				07833A0728B312500036F04A /* PhotosCollection */,
 				078339C728B1B0160036F04A /* Main.storyboard */,
-				078339CA28B1B0170036F04A /* Assets.xcassets */,
 				078339CC28B1B0170036F04A /* LaunchScreen.storyboard */,
-				07833A1728B338560036F04A /* Localizable.strings */,
 			);
 			path = UIAssets;
 			sourceTree = "<group>";
@@ -229,6 +228,15 @@
 				07833A1028B336F00036F04A /* StringExtension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		07833A1828B33EEC0036F04A /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				078339CA28B1B0170036F04A /* Assets.xcassets */,
+				07833A1728B338560036F04A /* Localizable.strings */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

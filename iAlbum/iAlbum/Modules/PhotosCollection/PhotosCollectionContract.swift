@@ -11,9 +11,10 @@ protocol PhotosCollectionContractView {
     func showLoading()
     func dismissLoading()
     func showError()
-    func updatePhotosCollection(newPhotos: [Photo])
+    func updatePhotosCollection(newPhotos: [Photo], isReload: Bool)
 }
 
 protocol PhotosCollectionContractPresenter {
     func loadPhotos()
+    func reloadPhotos()
 }
