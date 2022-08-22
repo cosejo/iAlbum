@@ -12,5 +12,4 @@ typealias getPhotosResponseCallback = ([Photo]?, Error?) -> Void
 protocol NetworkManager {
     func getPhotos(index: Int, limit: Int, callback: @escaping getPhotosResponseCallback)
     func handleResponse(_ response: HTTPURLResponse) -> ResponseResult
-    func cancelTask()
 }

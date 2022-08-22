@@ -9,12 +9,16 @@ import Foundation
 
 class IAlbumNetworkManager: NetworkManager {
     
+    private var urlSession: URLSession
     private var task: URLSessionTask?
     
+    init(urlSession: URLSession = URLSession.shared) {
+      self.urlSession = urlSession
+    }
+    
     func getPhotos(index: Int, limit: Int, callback: @escaping getPhotosResponseCallback) {
-        let session = URLSession.shared
-        let request = Endpoint.getPhotos(index: index, limit: limit).urlRequest()
-        task = session.dataTask(with: request, completionHandler: { data, response, error in
+        let request = Endpoint.getPhotos(index: index, limit: limit).getURLRequest()
+        task = urlSession.dataTask(with: request, completionHandler: { data, response, error in
             if let urlResponse = response as? HTTPURLResponse {
                 let result = self.handleResponse(urlResponse)
                 switch result {
@@ -49,9 +53,5 @@ class IAlbumNetworkManager: NetworkManager {
         default:
             return .failure
         }
-    }
-    
-    func cancelTask() {
-        task?.cancel()
     }
 }

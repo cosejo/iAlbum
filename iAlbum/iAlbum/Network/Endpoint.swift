@@ -46,7 +46,10 @@ enum Endpoint: Request {
         }
     }
     
-    func urlRequest() -> URLRequest {
+    /*
+     * Get Url Request object from the Endpoint information
+     */
+    func getURLRequest() -> URLRequest {
         var urlRequest = URLRequest(url: requestURL)
         urlRequest.httpMethod = method.rawValue
         headers?.forEach {

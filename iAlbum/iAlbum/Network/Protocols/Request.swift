@@ -18,4 +18,6 @@ protocol Request {
     var headers: Headers? { get }
     var method: HTTPMethod { get }
     var parameters: Parameters? { get }
+    
+    func getURLRequest() -> URLRequest
 }
