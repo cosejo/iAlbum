@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct NetworkConstants {
+enum NetworkConstants {
     static let baseURLPath = "https://jsonplaceholder.typicode.com/"
     static let getPhotosPath = "photos"
     static let contentHeaderKey = "Content-Type"

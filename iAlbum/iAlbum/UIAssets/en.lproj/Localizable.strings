@@ -1,0 +1,15 @@
+/* 
+  Localizable.strings
+  iAlbum
+
+  Created by Carlos Osejo on 21/8/22.
+  
+*/
+
+// English (US)
+
+// Photos Collection
+"photos.collection.loading.message" = "Loading Photos";
+"photos.collection.error.title" = "Ups, we have an error";
+"photos.collection.error.message" = "Please swipe again to reload";
+"photos.collection.error.button" = "Ok";

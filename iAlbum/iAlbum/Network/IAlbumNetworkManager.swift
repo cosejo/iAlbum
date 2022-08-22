@@ -50,4 +50,8 @@ class IAlbumNetworkManager: NetworkManager {
             return .failure
         }
     }
+    
+    func cancelTask() {
+        task?.cancel()
+    }
 }
