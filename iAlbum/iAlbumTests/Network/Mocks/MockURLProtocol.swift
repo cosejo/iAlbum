@@ -37,7 +37,9 @@ class MockURLProtocol: URLProtocol {
           }
     }
     
-    
+    /**
+     * Required for test running. In this project it has no implementation required yet.
+     */
     override func stopLoading() {
     }
 }

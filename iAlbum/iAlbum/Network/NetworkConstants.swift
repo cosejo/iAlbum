@@ -14,4 +14,6 @@ enum NetworkConstants {
     static let applicationJSONHeaderValue = "application/json"
     static let startParameterKey = "_start"
     static let limitParameterKey = "_limit"
+    static let imageMimeType = "image/"
+    static let successfulResponseCode = 200
 }

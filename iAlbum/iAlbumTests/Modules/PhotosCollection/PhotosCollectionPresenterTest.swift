@@ -75,6 +75,7 @@ class PhotosCollectionPresenterTest: XCTestCase {
         mockNetworkManager.photosResponse = photosResponse
     }
     
+    //MARK: Tests
     func testLoadPhotosSuccessfulPageOnce() {
         givenGetPhotosPageOnceWillSucceed()
         
@@ -84,8 +85,6 @@ class PhotosCollectionPresenterTest: XCTestCase {
         assert(mockView.photos.count == presenter.photos.count)
         assert(mockView.photos.count == presenter.photosLimit)
     }
-    
-    //MARK: Tests
     
     func testLoadPhotosSuccessfulPageTwo() {
         givenGetPhotosPageTwoWillSucceed()

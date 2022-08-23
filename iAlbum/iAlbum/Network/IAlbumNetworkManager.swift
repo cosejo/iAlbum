@@ -10,10 +10,10 @@ import Foundation
 class IAlbumNetworkManager: NetworkManager {
     
     private var urlSession: URLSession
-    private var task: URLSessionTask?
+    private(set) var task: URLSessionTask?
     
     init(urlSession: URLSession = URLSession.shared) {
-      self.urlSession = urlSession
+        self.urlSession = urlSession
     }
     
     func getPhotos(index: Int, limit: Int, callback: @escaping getPhotosResponseCallback) {
@@ -53,5 +53,26 @@ class IAlbumNetworkManager: NetworkManager {
         default:
             return .failure
         }
+    }
+    
+    func downloadImage(_ url: URL, callback: @escaping downloadImageResponseCallback) {
+        task = urlSession.dataTask(with: url) { data, response, error in
+            guard
+                let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == NetworkConstants.successfulResponseCode,
+                let mimeType = response?.mimeType, mimeType.hasPrefix(NetworkConstants.imageMimeType)
+                else {
+                    callback(nil, error)
+                    return
+                }
+            
+            callback(data, error)
+        }
+        
+        task?.resume()
+    }
+    
+    func cancelLoadingImage() {
+        task?.cancel()
+        task = nil
     }
 }

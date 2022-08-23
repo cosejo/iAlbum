@@ -9,21 +9,26 @@ import UIKit
 
 class PhotoDetailViewController: UIViewController {
     
-    @IBOutlet weak var photoImageView: UIImageView!
+    @IBOutlet weak var photoImageView: DownloadableImageView!
     
     public var activityIndicator: UIActivityIndicatorView?
     public var photoUrl: String?
-    public var isLoading: Bool = false
     
-    override func viewWillAppear(_ animated: Bool) {
+    //Mark: Lifecycle
+    override func viewDidLoad() {
         loadImage()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        photoImageView.cancelLoadingImage()
+    }
+    
+    //Mark: Methods
     func loadImage() {
         guard let url = photoUrl else {
             return
         }
         
-        photoImageView.setImageUrl(url: url)
+        photoImageView.downloadImage(url, cache: nil)
     }
 }

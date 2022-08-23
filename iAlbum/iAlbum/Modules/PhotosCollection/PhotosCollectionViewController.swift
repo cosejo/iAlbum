@@ -21,17 +21,21 @@ class PhotosCollectionViewController: UICollectionViewController {
     private let storyboardName = "Main"
     private let photoDetailViewControllerID = "PhotoDetailViewController"
     private let itemsPerRow: CGFloat = 3
+    private let cacheCountLimit = 200
     private let sectionInsets = UIEdgeInsets(top: 50.0, left: 20.0, bottom: 50.0, right: 20.0)
     
     public var activityIndicator: UIActivityIndicatorView?
     public var refreshControl: UIRefreshControl?
     
     public var presenter: PhotosCollectionContractPresenter?
+    public var imageCache: NSCache<AnyObject, AnyObject>?
     public var photos: [Photo] = []
     public var isLoading: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        imageCache = NSCache<AnyObject, AnyObject>()
+        imageCache?.countLimit = cacheCountLimit
         initLoadingView()
         setupRefreshingGesture()
         initPresenter()
@@ -134,7 +138,10 @@ extension PhotosCollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PhotoCell
-        cell.setCellInformation(url: photos[indexPath.row].url)
+        cell.cellReused = {
+            cell.photoImageView.cancelLoadingImage()
+        }
+        cell.setCellInformation(url: photos[indexPath.row].url, cache: imageCache)
         return cell
     }
     

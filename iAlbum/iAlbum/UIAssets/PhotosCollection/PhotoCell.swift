@@ -9,9 +9,17 @@ import UIKit
 
 class PhotoCell: UICollectionViewCell {
     
-    @IBOutlet weak var photoImageView: UIImageView!
+    @IBOutlet weak var photoImageView: DownloadableImageView!
     
-    func setCellInformation(url: String) {
-        photoImageView.setImageUrl(url: url)
+    var cellReused: (() -> Void)?
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cellReused?()
+    }
+    
+    func setCellInformation(url: String, cache: NSCache<AnyObject, AnyObject>?, contentMode: ContentMode = .scaleAspectFit) {
+        photoImageView.contentMode = contentMode
+        photoImageView.downloadImage(url, cache: cache)
     }
 }

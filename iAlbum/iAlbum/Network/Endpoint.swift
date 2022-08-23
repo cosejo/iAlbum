@@ -46,7 +46,7 @@ enum Endpoint: Request {
         }
     }
     
-    /*
+    /**
      * Get Url Request object from the Endpoint information
      */
     func getURLRequest() -> URLRequest {

@@ -29,7 +29,7 @@ class PhotosCollectionViewMock: PhotosCollectionContractView {
         isErrorShown = true
     }
     
-    /*
+    /**
      * Replicate some of the logic in order to test how change the photos collection
      */
     func updatePhotosCollection(newPhotos: [Photo], isReload: Bool) {
